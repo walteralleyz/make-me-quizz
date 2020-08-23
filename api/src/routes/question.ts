@@ -1,44 +1,28 @@
 import { Router } from 'express';
-import { DeleteResult, getRepository, Repository } from 'typeorm';
 import { Question } from '../entity/question';
-import { Categories } from '../entity/categories';
-import { Consumer } from '../entity/consumer';
+
+import { getCategories, getCategory, createQuestion, deleteQuestion } from '../controller/question';
 
 const questionRouter = Router();
 
-questionRouter.get('/categories', (req, res) => {
-    const RepCat: Repository<Categories> = getRepository(Categories);
-    const results: Promise<Categories[]> = RepCat.find({});
+questionRouter.get('/categories', async (req, res) => {
+    const categories = await getCategories();
 
-    results.then(dbRes => {
-        return res.json({
-            message: dbRes
-        });
-    }).catch(dbErr => {
-        return res.json({
-            message: dbErr
-        }).status(403);
-    })
+    return res.json({
+        message: categories
+    });
 });
 
-questionRouter.get('/categories/:category', (req, res) => {
-    const Rep: Repository<Question> = getRepository(Question);
+questionRouter.get('/categories/:category', async (req, res) => {
     const { category } = req.params;
+    const questionsByCategory: Question[] = await getCategory(category);
 
-    const results: Promise<Question[]> =  Rep.find({ categoria: category });
-
-    results.then(dbRes => {
-        return res.json({
-            message: dbRes
-        });
-    }).catch(dbErr => {
-        return res.json({
-            message: "Erro"
-        }).status(403);
-    })
+    return res.json({
+        message: questionsByCategory
+    });
 });
 
-questionRouter.post('/categories/:category', (req, res) => {
+questionRouter.post('/categories/:category', async (req, res) => {
     const { pergunta, escolhas, consumerId, resposta } = req.body;
     const { category } = req.params;
 
@@ -58,38 +42,17 @@ questionRouter.post('/categories/:category', (req, res) => {
         message: "Numero inferior de escolhas permitido"
     }).status(403);
 
-    const Rep: Repository<Question> = getRepository(Question);
-    const RepCat: Repository<Categories> = getRepository(Categories);
-
-    const consumer = new Consumer();
-
-    consumer.id = consumerId;
-
-    Rep.save(Rep.create({
-        pergunta,
-        escolhas,
-        categoria: category,
-        resposta,
-        consumer: [consumer]
-    }));
-
-    RepCat.save(Rep.create({
-        categoria: category
-    })).then(dbRes => dbRes).catch(dbErr => console.log("Categoria já existe!"));
+    const create: Question = await createQuestion(pergunta, escolhas, category, resposta, consumerId);
 
     return res.json({
-        message: 'Tudo certo'
+        message: create
     }).status(200);
 });
 
 questionRouter.delete('/categories/:category/:id', (req, res) => {
-    const Rep: Repository<Question> = getRepository(Question);
     const { id } = req.params;
 
-    const body: Promise<DeleteResult> = Rep.delete(id);
-    const response = body.then(dbRes => dbRes).catch(dbErr => dbErr);
-
-    console.log(response);
+    deleteQuestion(parseInt(id));
 
     return res.json({
         message: 'Deletado'

@@ -39,7 +39,7 @@ userRouter.post('/signup', (req, res) => {
     const exists: Promise<Consumer[] | undefined> = Rep.find({ email });
     const rolesId: Roles = new Roles();
 
-    rolesId.id = 1;
+    rolesId.id = 2;
 
     exists.then(dbRes => {
         if(dbRes && dbRes.length === 0) {

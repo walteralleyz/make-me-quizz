@@ -7,7 +7,7 @@ import {
 
 @Entity()
 @Unique(["categoria"])
-export class Categorias {
+export class Categories {
     @PrimaryGeneratedColumn()
     id: number;
 

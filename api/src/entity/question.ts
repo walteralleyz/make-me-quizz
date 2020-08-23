@@ -9,7 +9,7 @@ import {
 import { Consumer } from './consumer';
 
 @Entity()
-export class Perguntas {
+export class Question {
     @PrimaryGeneratedColumn()
     id: number;
 

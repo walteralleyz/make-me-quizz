@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import { DeleteResult, getRepository, Repository } from 'typeorm';
-import { Perguntas } from '../entity/perguntas';
-import { Categorias } from '../entity/categorias';
+import { Question } from '../entity/question';
+import { Categories } from '../entity/categories';
 import { Consumer } from '../entity/consumer';
 
 const questionRouter = Router();
 
 questionRouter.get('/categories', (req, res) => {
-    const RepCat: Repository<Categorias> = getRepository(Categorias);
-    const results: Promise<Categorias[]> = RepCat.find({});
+    const RepCat: Repository<Categories> = getRepository(Categories);
+    const results: Promise<Categories[]> = RepCat.find({});
 
     results.then(dbRes => {
         return res.json({
@@ -22,10 +22,10 @@ questionRouter.get('/categories', (req, res) => {
 });
 
 questionRouter.get('/categories/:category', (req, res) => {
-    const Rep: Repository<Perguntas> = getRepository(Perguntas);
+    const Rep: Repository<Question> = getRepository(Question);
     const { category } = req.params;
 
-    const results: Promise<Perguntas[]> =  Rep.find({ categoria: category });
+    const results: Promise<Question[]> =  Rep.find({ categoria: category });
 
     results.then(dbRes => {
         return res.json({
@@ -58,8 +58,8 @@ questionRouter.post('/categories/:category', (req, res) => {
         message: "Numero inferior de escolhas permitido"
     }).status(403);
 
-    const Rep: Repository<Perguntas> = getRepository(Perguntas);
-    const RepCat: Repository<Categorias> = getRepository(Categorias);
+    const Rep: Repository<Question> = getRepository(Question);
+    const RepCat: Repository<Categories> = getRepository(Categories);
 
     const consumer = new Consumer();
 
@@ -83,7 +83,7 @@ questionRouter.post('/categories/:category', (req, res) => {
 });
 
 questionRouter.delete('/categories/:category/:id', (req, res) => {
-    const Rep: Repository<Perguntas> = getRepository(Perguntas);
+    const Rep: Repository<Question> = getRepository(Question);
     const { id } = req.params;
 
     const body: Promise<DeleteResult> = Rep.delete(id);

@@ -13,13 +13,14 @@ const port: number =  5000;
 
 const connection: Promise<Connection> = createConnection(config);
 
-connection.then(res => {
+connection.then(dbRes => {
     console.log("DB connected!");
 })
 .catch(databaseError => console.error(databaseError));
 
 app.use(bodyParser.json());
+
 app.use('/api/v1/question', questionRouter);
 app.use('/api/v1/user', userRouter);
 
-app.listen(port, address, () => console.log("Server running!"));
+app.listen(port, address, () => console.log('Server running on port %s', port));

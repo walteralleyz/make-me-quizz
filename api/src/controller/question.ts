@@ -2,7 +2,6 @@ import { DeleteResult, getRepository, Repository } from "typeorm";
 
 import { Categories } from "../entity/categories";
 import { Question } from '../entity/question';
-import { Consumer } from '../entity/consumer';
 
 export async function getCategories(request: any, response: any): Promise<Categories[]> {
     const RepCat: Repository<Categories> = getRepository(Categories);
@@ -23,14 +22,11 @@ export async function getCategory(request: any, response: any): Promise<Question
 }
 
 export async function createQuestion(request: any, response:any): Promise<Question> {
-    const { pergunta, escolhas, consumerId, resposta } = request.body;
+    const { pergunta, escolhas, resposta } = request.body;
     const { category } = request.params;
 
     const Rep: Repository<Question> = getRepository(Question);
     const RepCat: Repository<Categories> = getRepository(Categories);
-    const consumer = new Consumer();
-
-    consumer.id = consumerId;
 
     await RepCat.save(RepCat.create({ categoria: category }));
 
@@ -38,8 +34,7 @@ export async function createQuestion(request: any, response:any): Promise<Questi
         pergunta,
         escolhas,
         categoria: category,
-        resposta,
-        consumer: [consumer]
+        resposta
     }));
 
     const result: Question = await body;
@@ -56,4 +51,15 @@ export async function deleteQuestion(request: any, response: any): Promise<Delet
     const result: DeleteResult = await body;
 
     return response.json({ result });
+}
+
+export async function isRightAnswer(request: any, response: any) {
+    const Rep: Repository<Question> = getRepository(Question);
+    const body: Promise<Question | undefined> = Rep.findOne({ id: request.body.id });
+
+    const result: Question | undefined = await body;
+
+    if(result) return result.resposta === request.body.answer;
+
+    return false;
 }

@@ -1,28 +1,34 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column, Unique, 
-    OneToOne,
-    JoinColumn,
+    Column, Unique,
+    BeforeInsert
 } from 'typeorm';
 
-import { Roles } from './roles';
+import { createHmac } from 'crypto';
+import { hash } from '../helpers/config';
 
 @Entity()
-@Unique(["email", "phone"])
+@Unique(["email", "phone", "nick"])
 export class Consumer {
+    @BeforeInsert()
+    private hashPhone = () => this.phone = createHmac("sha1", hash).update(this.phone).digest("hex");
+
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
+    nick: string;
+
+    @Column()
     email: string;
 
-    @Column({
-        length: 14
-    })
+    @Column()
     phone: string;
 
-    @OneToOne(type => Roles)
-    @JoinColumn()
-    roles: Roles;
+    @Column({ nullable: true, default: 0 })
+    points?: number;
+
+    @Column({ nullable: true, default: '0' })
+    questionDoneId?: string;
 }

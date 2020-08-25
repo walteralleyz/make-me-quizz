@@ -1,12 +1,8 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    ManyToMany,
-    JoinTable,
     Column
 } from 'typeorm';
-
-import { Consumer } from './consumer';
 
 @Entity()
 export class Question {
@@ -27,8 +23,4 @@ export class Question {
 
     @Column()
     categoria: string;
-
-    @ManyToMany(type => Consumer)
-    @JoinTable()
-    consumer: Consumer[];
 }

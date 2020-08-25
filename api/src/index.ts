@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import { config } from './helpers/ormconfig';
 
 import questionRouter from './routes/question';
-import userRouter from './routes/user';
+import userRouter from './routes/consumer';
 
 const app = express();
 const address: string = 'localhost';

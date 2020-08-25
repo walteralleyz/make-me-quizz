@@ -1,11 +1,9 @@
 import { Repository, getRepository } from 'typeorm';
-import { createHmac } from 'crypto';
 
 import { Consumer } from '../entity/consumer';
 import { isRightAnswer } from './question';
-import { hash } from '../helpers/config';
 
-export async function createUser(request: any, response: any) {
+export async function signup(request: any, response: any) {
     const { nick, email, phone } = request.body;
 
     const Rep: Repository<Consumer> = getRepository(Consumer);
@@ -20,20 +18,6 @@ export async function createUser(request: any, response: any) {
     const result = await body;
 
     return response.json({ result });
-}
-
-export async function login(request: any, response: any) {
-    const { email, phone } = request.body;
-
-    const Rep: Repository<Consumer> = getRepository(Consumer);
-    const exists: Promise<Consumer | undefined> = Rep.findOne({ email });
-    const phoneHash: string = createHmac("sha1", hash).update(phone).digest("hex");
-
-    let findOne: Consumer | undefined = await exists;
-
-    if(findOne && findOne.phone === phoneHash) return response.json({ message: 'Logado' });
-
-    return response.json({ error: 'Email ou Telefone inválido!' });
 }
 
 export async function nickExists(request: any, response: any) {

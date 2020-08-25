@@ -1,13 +1,16 @@
 import { Router } from 'express';
 
-import { createUser, login, nickExists, setQuestionDone } from '../controller/consumer';
+import { nickExists, setQuestionDone, signup } from '../controller/consumer';
+import { signin, signout } from '../controller/auth';
 import { validation, checkValidation, loginValidation } from '../helpers/consumerValidator';
+import { requireSignin } from '../controller/auth';
 
 const userRouter = Router();
 
-userRouter.post('/signin', loginValidation.check, loginValidation.handler, login);
-userRouter.post('/signup', validation.check, validation.handler, createUser);
-userRouter.post('/check/:id/', checkValidation.check, checkValidation.handler, setQuestionDone);
+userRouter.post('/signin', loginValidation.check, loginValidation.handler, signin);
+userRouter.post('/signup', validation.check, validation.handler, signup);
+userRouter.get('/signout', signout);
+userRouter.post('/check/:id/', requireSignin, checkValidation.check, checkValidation.handler, setQuestionDone);
 
 userRouter.get('/nick/:nick', nickExists);
 

@@ -1,0 +1,20 @@
+{
+    "/api": {
+        "/v1": {
+            "/consumer": {
+                "method": [{
+                    "POST": ["/signin", "/signup", "/check/:id"],
+                    "GET": ["/nick/:nick"]
+                }]
+            },
+
+            "/question": {
+                "method": [{
+                    "GET": ["/categories", "/categories/:category"],
+                    "POST": ["/categories/:category"],
+                    "DELETE": ["/categories/:category/:id"]
+                }]
+            }
+        }
+    }
+}

@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 
 import { createHmac } from 'crypto';
-import { hash } from '../helpers/config';
+import { hash } from '../config/config';
 
 @Entity()
 @Unique(["email", "phone", "nick"])

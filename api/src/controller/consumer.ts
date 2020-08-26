@@ -4,61 +4,57 @@ import { Consumer } from '../entity/consumer';
 import { QuestionController } from './question';
 
 export class ConsumerController {
-    public consumerRepository: Repository<Consumer>;
-    public request: any;
-    public response: any;
+    async create(request: any, response: any) {
+        const consumerRepository: Repository<Consumer> = getRepository(Consumer);
 
-    constructor(request: any, response: any) {
-        this.consumerRepository = getRepository(Consumer);
-        this.request = request;
-        this.response = response;
-    }
-
-    async create() {
-        const emailExists: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
-            email: this.request.body.email 
+        const emailExists: Promise<Consumer | undefined> = consumerRepository.findOne({ 
+            email: request.body.email 
         });
 
-        const nickExist: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
-            nick: this.request.body.nick 
+        const nickExist: Promise<Consumer | undefined> = consumerRepository.findOne({ 
+            nick: request.body.nick 
         });
 
         const resultEmail: Consumer | undefined = await emailExists;
         const resultNick: Consumer | undefined = await nickExist;
 
-        if(resultEmail) return this.response.status(400).json({ error: 'Email já cadastrado' });
-        if(resultNick) return this.response.status(400).json({ error: 'Nick já cadastrado' });
+        if(resultEmail) return response.status(400).json({ error: 'Email já cadastrado' });
+        if(resultNick) return response.status(400).json({ error: 'Nick já cadastrado' });
 
-        const body = this.consumerRepository.save(this.consumerRepository.create({ 
-            nick: this.request.body.nick, 
-            email: this.request.body.email, 
-            phone: this.request.body.phone 
+        const body = consumerRepository.save(consumerRepository.create({ 
+            nick: request.body.nick, 
+            email: request.body.email, 
+            phone: request.body.phone 
         }));
 
         const result = await body;
 
-        return this.response.json({ result });
+        return response.json({ result });
     }
 
-    async nickExists() {
-        const exists: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
-            nick: this.request.params.nick 
+    async nickExists(request: any, response: any) {
+        const consumerRepository: Repository<Consumer> = getRepository(Consumer);
+
+        const exists: Promise<Consumer | undefined> = consumerRepository.findOne({ 
+            nick: request.params.nick 
         });
 
         const findOne: Consumer | undefined = await exists;
 
-        if(findOne) return this.response.json({ error: 'Nick já está sendo usado' });
+        if(findOne) return response.json({ error: 'Nick já está sendo usado' });
 
-        return this.response.json({ message: 'Nick disponivel' });
+        return response.json({ message: 'Nick disponivel' });
     }
 
-    async questionDone() {
-        const question = new QuestionController(this.request, this.response);
-        const done = await question.answer();
+    async questionDone(request: any, response: any) {
+        const consumerRepository: Repository<Consumer> = getRepository(Consumer);
+
+        const question = new QuestionController();
+        const done = await question.answer(request, response);
 
         if(done) {
-            const exists: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
-                id: this.request.params.id 
+            const exists: Promise<Consumer | undefined> = consumerRepository.findOne({ 
+                id: request.params.id 
             });
     
             const findOne: Consumer | undefined = await exists;
@@ -66,11 +62,11 @@ export class ConsumerController {
             if(findOne) {
                 findOne.points = findOne.points && findOne.points + 1;
                 findOne.questionDoneId = findOne.questionDoneId && findOne.questionDoneId + 
-                `, ${this.request.body.id}`;
+                `, ${request.body.id}`;
     
-                this.consumerRepository.save(findOne);
+                consumerRepository.save(findOne);
                 
-                return this.response.json({ message: 'Correto' });
+                return response.json({ message: 'Correto' });
             }
         }
     }

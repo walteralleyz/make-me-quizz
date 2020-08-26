@@ -14,14 +14,9 @@ export const requireSignin = expressJwt({
 });
 
 export const isAdmin = (request: any, response: any, next: any) => {
-    const { Authorization } = request.header;
-    const decoded: any = decode(Authorization);
+    if(!request.auth || request.auth.id !== 1) return response.json({ error: 'Nivel administrador faltando' });
 
-    if(decoded && decoded.id) {
-        if(decoded.id !== 1) next();
-    } else {
-        return response.status(403).json({ error: 'Nivel administrador faltando!' });
-    }
+    next();
 }
 
 export async function signin(request: any, response: any) {

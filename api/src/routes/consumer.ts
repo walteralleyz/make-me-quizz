@@ -6,29 +6,21 @@ import { validation, checkValidation, loginValidation } from '../helpers/consume
 import { requireSignin } from '../controller/auth';
 
 const userRouter = Router();
+const consumerController: ConsumerController = new ConsumerController();
 
 userRouter.post('/signin', loginValidation.check, loginValidation.handler, signin);
 userRouter.get('/signout', signout);
 
-userRouter.post('/signup', validation.check, validation.handler, (req: any, res: any) => {
-    const consumer: ConsumerController = new ConsumerController(req, res);
-    consumer.create();
-});
+userRouter.post('/signup', validation.check, validation.handler, consumerController.create);
 
 userRouter.post(
     '/check/:id/', 
     requireSignin, 
     checkValidation.check, 
     checkValidation.handler,
-    (req: any, res: any) => {
-        const consumer: ConsumerController = new ConsumerController(req, res);
-        consumer.questionDone();
-    } 
+    consumerController.questionDone
 );
 
-userRouter.get('/nick/:nick', (req: any, res: any) => {
-    const consumer: ConsumerController = new ConsumerController(req, res);
-    consumer.nickExists();
-});
+userRouter.get('/nick/:nick', consumerController.nickExists);
 
 export default userRouter;

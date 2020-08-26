@@ -5,32 +5,20 @@ import { createValidation } from '../helpers/questionValidator';
 import { QuestionController } from '../controller/question';
 
 const questionRouter = Router();
+const questionController: QuestionController = new QuestionController();
 
-questionRouter.get('/categories', (req, res) => {
-    const question = new QuestionController(req, res);
-    question.getCategories();
-});
-
-questionRouter.get('/categories/:category', requireSignin, (req, res) => {
-    const question = new QuestionController(req, res);
-    question.getAll();
-});
+questionRouter.get('/categories', questionController.getCategories);
+questionRouter.get('/categories/:category', requireSignin, questionController.getAll);
 
 questionRouter.post(
     '/categories/:category', 
     requireSignin, 
     createValidation.check, 
-    createValidation.handler, 
+    createValidation.handler,
     isAdmin,
-    (req: any, res: any) => {
-        const question = new QuestionController(req, res);
-        question.create();
-    }
+    questionController.create
 );
 
-questionRouter.delete('/categories/:category/:id', requireSignin, isAdmin, (req, res) => {
-    const question = new QuestionController(req, res);
-    question.delete();
-});
+questionRouter.delete('/categories/:category/:id', requireSignin, isAdmin, questionController.delete);
 
 export default questionRouter;

@@ -3,63 +3,65 @@ import { DeleteResult, getRepository, Repository } from "typeorm";
 import { Categories } from "../entity/categories";
 import { Question } from '../entity/question';
 
-export async function getCategories(request: any, response: any): Promise<Categories[]> {
-    const RepCat: Repository<Categories> = getRepository(Categories);
-    const body: Promise<Categories[]> = RepCat.find({});
+export class QuestionController {
+    questionRepository: Repository<Question>;
+    categoriesRepository: Repository<Categories>;
+    request: any;
+    response: any;
 
-    const result: Categories[] = await body;
+    constructor(request: any, response: any) {
+        this.questionRepository = getRepository(Question);
+        this.categoriesRepository = getRepository(Categories);
+        this.request = request;
+        this.response = response;
+    }
 
-    return response.json({ result });
-}
+    async create() {
+        await this.categoriesRepository.save(this.categoriesRepository.create({ 
+            categoria: this.request.params.category 
+        }));
 
-export async function getCategory(request: any, response: any): Promise<Question[]> {
-    const Rep: Repository<Question> = getRepository(Question);
-    const body: Promise<Question[]> = Rep.find({ categoria: request.params.category });
+        const body: Promise<Question> = this.questionRepository.save(this.questionRepository.create({
+            pergunta: this.request.body.pergunta,
+            escolhas: this.request.body.escolhas,
+            categoria: this.request.params.category,
+            resposta: this.request.body.resposta
+        }));
 
-    const result: Question[] = await body;
+        const result: Question = await body;
 
-    return response.json({ result });
-}
+        return this.response.json({
+            message: result
+        }).status(200);
+    }
 
-export async function createQuestion(request: any, response:any): Promise<Question> {
-    const { pergunta, escolhas, resposta } = request.body;
-    const { category } = request.params;
+    async getAll() {
+        const body: Promise<Question[]> = this.questionRepository.find({ categoria: this.request.params.category });
+        const result: Question[] = await body;
 
-    const Rep: Repository<Question> = getRepository(Question);
-    const RepCat: Repository<Categories> = getRepository(Categories);
+        return this.response.json({ result });
+    }
 
-    await RepCat.save(RepCat.create({ categoria: category }));
+    async delete() {
+        const body: Promise<DeleteResult> = this.questionRepository.delete(this.request.params.id);
+        const result: DeleteResult = await body;
 
-    const body: Promise<Question> = Rep.save(Rep.create({
-        pergunta,
-        escolhas,
-        categoria: category,
-        resposta
-    }));
+        return this.response.json({ result });
+    }
 
-    const result: Question = await body;
+    async getCategories() {
+        const body: Promise<Categories[]> = this.categoriesRepository.find({});
+        const result: Categories[] = await body;
 
-    return response.json({
-        message: result
-    }).status(200);
-}
+        return this.response.json({ result });
+    }
 
-export async function deleteQuestion(request: any, response: any): Promise<DeleteResult> {
-    const Rep: Repository<Question> = getRepository(Question);
-    const body: Promise<DeleteResult> = Rep.delete(request.params.id);
+    async answer() {
+        const body: Promise<Question | undefined> = this.questionRepository.findOne({ id: this.request.body.id });
+        const result: Question | undefined = await body;
 
-    const result: DeleteResult = await body;
+        if(result) return result.resposta === this.request.body.answer;
 
-    return response.json({ result });
-}
-
-export async function isRightAnswer(request: any, response: any) {
-    const Rep: Repository<Question> = getRepository(Question);
-    const body: Promise<Question | undefined> = Rep.findOne({ id: request.body.id });
-
-    const result: Question | undefined = await body;
-
-    if(result) return result.resposta === request.body.answer;
-
-    return false;
+        return false;
+    }
 }

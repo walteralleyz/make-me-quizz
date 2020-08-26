@@ -1,59 +1,77 @@
 import { Repository, getRepository } from 'typeorm';
 
 import { Consumer } from '../entity/consumer';
-import { isRightAnswer } from './question';
+import { QuestionController } from './question';
 
-export async function signup(request: any, response: any) {
-    const { nick, email, phone } = request.body;
+export class ConsumerController {
+    public consumerRepository: Repository<Consumer>;
+    public request: any;
+    public response: any;
 
-    const Rep: Repository<Consumer> = getRepository(Consumer);
-    const emailExists: Promise<Consumer | undefined> = Rep.findOne({ email });
-    const nickExist: Promise<Consumer | undefined> = Rep.findOne({ nick });
-
-    const resultEmail: Consumer | undefined = await emailExists;
-    const resultNick: Consumer | undefined = await nickExist;
-
-    if(resultEmail) return response.status(400).json({ error: 'Email já cadastrado' });
-    if(resultNick) return response.status(400).json({ error: 'Nick já cadastrado' });
-
-    const body = Rep.save(Rep.create({ nick, email, phone }));
-
-    const result = await body;
-
-    return response.json({ result });
-}
-
-export async function nickExists(request: any, response: any) {
-    const { nick } = request.params;
-
-    const Rep: Repository<Consumer> = getRepository(Consumer);
-    const exists: Promise<Consumer | undefined> = Rep.findOne({ nick });
-
-    let findOne: Consumer | undefined = await exists;
-
-    if(findOne) return response.json({ error: 'Nick já está sendo usado' });
-
-    return response.json({ message: 'Nick disponivel' });
-}
-
-export async function setQuestionDone(request: any, response: any) {
-    const done = await isRightAnswer(request, response);
-
-    if(done) {
-        const Rep: Repository<Consumer> = getRepository(Consumer);
-        const exists: Promise<Consumer | undefined> = Rep.findOne({ id: request.params.id });
-
-        let findOne: Consumer | undefined = await exists;
-
-        if(findOne) {
-            findOne.points = findOne.points && findOne.points + 1;
-            findOne.questionDoneId = findOne.questionDoneId && findOne.questionDoneId + `, ${request.body.id}`;
-
-            Rep.save(findOne);
-            
-            return response.json({ message: 'Correto' });
-        }
+    constructor(request: any, response: any) {
+        this.consumerRepository = getRepository(Consumer);
+        this.request = request;
+        this.response = response;
     }
 
-    return response.json({ error: 'Errado' });
+    async create() {
+        const emailExists: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
+            email: this.request.body.email 
+        });
+
+        const nickExist: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
+            nick: this.request.body.nick 
+        });
+
+        const resultEmail: Consumer | undefined = await emailExists;
+        const resultNick: Consumer | undefined = await nickExist;
+
+        if(resultEmail) return this.response.status(400).json({ error: 'Email já cadastrado' });
+        if(resultNick) return this.response.status(400).json({ error: 'Nick já cadastrado' });
+
+        const body = this.consumerRepository.save(this.consumerRepository.create({ 
+            nick: this.request.body.nick, 
+            email: this.request.body.email, 
+            phone: this.request.body.phone 
+        }));
+
+        const result = await body;
+
+        return this.response.json({ result });
+    }
+
+    async nickExists() {
+        const exists: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
+            nick: this.request.params.nick 
+        });
+
+        const findOne: Consumer | undefined = await exists;
+
+        if(findOne) return this.response.json({ error: 'Nick já está sendo usado' });
+
+        return this.response.json({ message: 'Nick disponivel' });
+    }
+
+    async questionDone() {
+        const question = new QuestionController(this.request, this.response);
+        const done = await question.answer();
+
+        if(done) {
+            const exists: Promise<Consumer | undefined> = this.consumerRepository.findOne({ 
+                id: this.request.params.id 
+            });
+    
+            const findOne: Consumer | undefined = await exists;
+    
+            if(findOne) {
+                findOne.points = findOne.points && findOne.points + 1;
+                findOne.questionDoneId = findOne.questionDoneId && findOne.questionDoneId + 
+                `, ${this.request.body.id}`;
+    
+                this.consumerRepository.save(findOne);
+                
+                return this.response.json({ message: 'Correto' });
+            }
+        }
+    }
 }

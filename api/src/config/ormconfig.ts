@@ -7,6 +7,6 @@ export const config: ConnectionOptions = {
     username: "mmadmin",
     password: "@mmdb1937",
     database: "mmquizz",
-    entities: ["src/entity/*.ts"],
+    entities: ["build/entity/*.ts"],
     synchronize: true
 };

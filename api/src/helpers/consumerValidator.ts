@@ -14,7 +14,7 @@ export const validation = {
         if(!errors.isEmpty()) {
             const error = errors.array()[0];
 
-            return response.json({ error }).status(400);
+            return response.status(400).json({ error });
         }
 
         next();
@@ -33,7 +33,7 @@ export const loginValidation = {
         if(!errors.isEmpty()) {
             const error = errors.array()[0];
 
-            return response.json({ error }).status(400);
+            return response.status(400).json({ error });
         }
 
         next();
@@ -52,7 +52,7 @@ export const checkValidation = {
         if(!errors.isEmpty()) {
             const error = errors.array()[0];
 
-            return response.json({ error }).status(400);
+            return response.status(400).json({ error });
         }
 
         next();

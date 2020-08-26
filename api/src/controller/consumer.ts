@@ -7,11 +7,14 @@ export async function signup(request: any, response: any) {
     const { nick, email, phone } = request.body;
 
     const Rep: Repository<Consumer> = getRepository(Consumer);
-    const exists: Promise<Consumer | undefined> = Rep.findOne({ email }) || Rep.findOne({ nick });
+    const emailExists: Promise<Consumer | undefined> = Rep.findOne({ email });
+    const nickExist: Promise<Consumer | undefined> = Rep.findOne({ nick });
 
-    let save: Consumer | undefined = await exists;
+    const resultEmail: Consumer | undefined = await emailExists;
+    const resultNick: Consumer | undefined = await nickExist;
 
-    if(save) return response.json({ error: 'Usuário já cadastrado' });
+    if(resultEmail) return response.status(400).json({ error: 'Email já cadastrado' });
+    if(resultNick) return response.status(400).json({ error: 'Nick já cadastrado' });
 
     const body = Rep.save(Rep.create({ nick, email, phone }));
 

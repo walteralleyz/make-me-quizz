@@ -20,7 +20,7 @@ export const isAdmin = (request: any, response: any, next: any) => {
     if(decoded && decoded.id) {
         if(decoded.id !== 1) next();
     } else {
-        return response.json({ error: 'Nivel administrador faltando!' });
+        return response.status(403).json({ error: 'Nivel administrador faltando!' });
     }
 }
 
@@ -34,11 +34,11 @@ export async function signin(request: any, response: any) {
     const findOne: Consumer | undefined = await exists;
     const token: string = JWTSign({id: findOne && findOne.id}, JWT_SECRET);
 
-    if(findOne && findOne.phone === phoneHash) return response.json({ message: 'Logado', token });
-
     response.cookie("t", token, {expire: new Date('2030-01-01')});
 
-    return response.json({ error: 'Email ou Telefone inválido!' });
+    if(findOne && findOne.phone === phoneHash) return response.json({ message: 'Logado', token });
+
+    return response.status(400).json({ error: 'Email ou Telefone inválido!' });
 }
 
 export function signout(request: any, response: any) {

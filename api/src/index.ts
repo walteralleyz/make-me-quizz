@@ -21,6 +21,7 @@ connection.then(dbRes => {
 })
 .catch(databaseError => console.error(databaseError));
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 

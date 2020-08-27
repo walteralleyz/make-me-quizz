@@ -1,12 +1,10 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column, 
-    Unique
+    Column
 } from 'typeorm';
 
 @Entity()
-@Unique(["categoria"])
 export class Categories {
     @PrimaryGeneratedColumn()
     id: number;

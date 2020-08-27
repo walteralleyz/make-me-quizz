@@ -79,8 +79,8 @@ describe('Pergunta', () => {
                 resposta: 'c'
             })
             .end((err, response) => {
-                response.should.have.status(401);
-
+                response.should.have.status(200);
+                response.should.have.property('result');
                 done();
             })
         })

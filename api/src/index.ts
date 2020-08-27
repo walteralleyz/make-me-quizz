@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import * as dotenv from 'dotenv';
 
 import { Request, Response } from 'express';
-import { config } from './config/ormconfig';
 import { createConnection, Connection } from 'typeorm';
 
 import questionRouter from './routes/question';
@@ -14,7 +14,14 @@ const app = express();
 const address: string = 'localhost';
 const port: number =  5000;
 
-const connection: Promise<Connection> = createConnection(config);
+dotenv.config();
+
+const connection: Promise<Connection> = createConnection({
+	type: 'postgres',
+    url: process.env.TYPEORM_URL,
+    entities: ['build/entity/*.js'],
+    synchronize: true
+});
 
 connection.then(dbRes => {
     console.log("DB connected!");

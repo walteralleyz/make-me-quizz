@@ -10,7 +10,7 @@ const Navbar = ({ logged }) => {
                     <h1>|MakeMeQuizz|</h1>
                 </li>
                 <li className="navbar__item">
-                    <h5>{logged ? "0 pontos" : "Quiz"}</h5>
+                    <h5>{logged ? "0 pontos" : ""}</h5>
                 </li>
                 <li className="navbar__item">
                     <img

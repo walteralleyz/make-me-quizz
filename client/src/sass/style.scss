@@ -1,6 +1,27 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: Alata;
+    src: url("./fonts/Alata-Regular.ttf");
+}
+
+@font-face {
+    font-family: KronaOne;
+    src: url('./fonts/KronaOne-Regular.ttf');
+}
+
+@font-face {
+    font-family: PoppinsRegular;
+    src: url('./fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+    font-family: PoppinsBold;
+    src: url('./fonts/Poppins-Bold.ttf');
 }
 
 @mixin textShadow {
@@ -10,7 +31,6 @@
 
 @mixin backgroundGlass {
     background-color: rgba(0, 0, 0, 0.13);
-    padding: 10px 0;
     box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.13);
 }
 
@@ -18,29 +38,124 @@
     min-height: 100vh;
     background-image: linear-gradient(to right top, #5e11db, #d8009e, #fe1868, #fe754a, #edaf56);
     @include textShadow;
+    font-family: KronaOne, Arial, Helvetica, sans-serif;
 }
 
 .navbar {
-    height: 48px;
-    @include backgroundGlass;
+    padding: 6px 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.13);
 
     .navbar__list {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-evenly;
         list-style-type: none;
         margin: 0;
         padding: 0;
         overflow: hidden;
+
+        @media only screen and (max-width: 920px) {
+            flex-direction: column;
+        }
     }
 
     .navbar__item {
         line-height: 48px;
+        padding: 0 5px;
+
+        &:hover {
+            cursor: pointer;
+            transition: 0.4s;
+            @include backgroundGlass;
+        }
     }
 
     .navbar__profpic {
         width: 48px;
         float: left;
         margin-right: 10px;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px;
+
+    @media only screen and (max-width: 920px) {
+        padding: 16px 0;
+    }
+}
+
+.form {
+    width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 45px 55px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.13);
+    text-align: center;
+    overflow: hidden;
+    font-family: PoppinsRegular, Arial, Helvetica, sans-serif;
+
+    @media only screen and (max-width: 920px) {
+        width: 100%;
+        border-radius: 0;
+        padding: 16px;
+    }
+
+    .form__title {
+        color: #000;
+        text-shadow: none;
+        font-size: 2rem;
+        padding-bottom: 40px;
+        font-family: PoppinsBold, Arial, Helvetica, sans-serif;
+    }
+
+    .form__button {
+        background-image: linear-gradient(to right top, #5e11db, #d8009e, #fe1868, #fe754a, #edaf56);
+        width: 80%;
+        height: 50px;
+        font-size: 16px;
+        margin: 0 auto;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 8px;
+        color: #fff;
+        font-weight: 450;
+        transition: 0.5s;
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.4);
+            opacity: 0.9;
+            @include textShadow;
+        }
+    }
+
+    .form__input-holder {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin-bottom: 27px;
+    }
+
+    .form__input-label {
+        color: #333;
+        text-shadow: none;
+        font-weight: bold;
+    }
+
+    .form__input {
+        padding: 8px 5px;
+        font-size: 1.15rem;
+        border: none;
+        border-bottom: 2px solid #d9d9d9;
+        transition: 0.6s;
+
+        &:focus {
+            border-bottom: 2px solid #fe1868;
+        }
     }
 }

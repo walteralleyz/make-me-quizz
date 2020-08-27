@@ -11,7 +11,6 @@ import userRouter from './routes/consumer';
 import docs from './docs.json';
 
 const app = express();
-const port: number =  5000;
 
 dotenv.config();
 
@@ -45,4 +44,4 @@ app.use((err: any, request: Request, response: Response, next: any) => {
 	});
 });
 
-app.listen(port, () => console.log('Server running on port %s', port));
+app.listen(process.env.PORT || 5000, () => console.log('Server running!'));

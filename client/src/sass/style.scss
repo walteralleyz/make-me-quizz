@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@mixin textShadow {
+    color: #fff;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+@mixin backgroundGlass {
+    background-color: rgba(0, 0, 0, 0.13);
+    padding: 10px 0;
+    box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.13);
+}
+
+.container {
+    min-height: 100vh;
+    background-image: linear-gradient(to right top, #5e11db, #d8009e, #fe1868, #fe754a, #edaf56);
+    @include textShadow;
+}
+
+.navbar {
+    height: 48px;
+    @include backgroundGlass;
+
+    .navbar__list {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .navbar__item {
+        line-height: 48px;
+    }
+
+    .navbar__profpic {
+        width: 48px;
+        float: left;
+        margin-right: 10px;
+    }
+}

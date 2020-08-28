@@ -10,6 +10,8 @@ import "./sass/style.scss";
 import Main from './routes/main';
 import Signup from "./routes/signup";
 import Signin from "./routes/signin";
+import PrivateRoute from "./routes/privateRoute";
+import PageNotFound from "./routes/404";
 
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
@@ -20,9 +22,9 @@ function App() {
             <Router>
                 <Navbar logged={false} />
                 <Switch>
-                    <Route exact path="/">
+                    <PrivateRoute exact path="/">
                         <Main />
-                    </Route>
+                    </PrivateRoute>
 
                     <Route exact path="/signin">
                         <Signin />
@@ -30,6 +32,10 @@ function App() {
 
                     <Route exact path="/signup">
                         <Signup />
+                    </Route>
+
+                    <Route path="*">
+                        <PageNotFound />
                     </Route>
                 </Switch>
                 <Footer />

@@ -17,10 +17,10 @@ function Signin() {
                 />
 
                 <InputLabeled
-                    label={"Senha"}
+                    label={"Celular"}
                     id={"pwd"}
-                    type={"password"}
-                    placeholder={"Digite uma Senha"}
+                    type={"tel"}
+                    placeholder={"Digite seu numero"}
                 />
 
                 <button className="form__button">Entrar</button>

@@ -191,6 +191,26 @@ a {
     }
 }
 
+.error-page {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    padding: 2.5rem 0;
+    margin-bottom: 50px;
+
+    .error-page__image {
+        max-width: 30%;
+    }
+
+    .error-page__text {
+        text-align: center;
+        background-color: #5e11db;
+        padding: 8px 8px;
+        margin-top: 16px;
+    }
+}
+
 .footer {
     text-align: center;
 

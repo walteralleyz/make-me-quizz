@@ -23,10 +23,10 @@ function Signup() {
                 />
 
                 <InputLabeled
-                    label={"Senha"}
+                    label={"Celular"}
                     id={"pwd"}
-                    type={"password"}
-                    placeholder={"********"}
+                    type={"tel"}
+                    placeholder={"(xx)xxxx-xxxxx"}
                 />
 
                 <button className="form__button">Enviar</button>

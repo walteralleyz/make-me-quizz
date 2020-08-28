@@ -12,21 +12,21 @@ function Signup() {
                     label={"Nick"}
                     id={"nick"}
                     type={"text"}
-                    placeholder={"Digite seu Nick"}
+                    placeholder={"Ex.: Gilberto333"}
                 />
 
                 <InputLabeled
                     label={"Email"}
                     id={"email"}
                     type={"email"}
-                    placeholder={"Digite seu Email"}
+                    placeholder={"email@dominio.com"}
                 />
 
                 <InputLabeled
                     label={"Senha"}
                     id={"pwd"}
                     type={"password"}
-                    placeholder={"Digite uma Senha"}
+                    placeholder={"********"}
                 />
 
                 <button className="form__button">Enviar</button>

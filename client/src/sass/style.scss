@@ -34,6 +34,11 @@
     box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.13);
 }
 
+a {
+    @include textShadow;
+    text-decoration: none;
+}
+
 .container {
     min-height: 100vh;
     background-image: linear-gradient(to right top, #5e11db, #d8009e, #fe1868, #fe754a, #edaf56);
@@ -43,7 +48,7 @@
 
 .navbar {
     padding: 6px 0;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(214, 0, 157, 0.3);
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.13);
 
     .navbar__list {
@@ -57,6 +62,7 @@
 
         @media only screen and (max-width: 920px) {
             flex-direction: column;
+            text-align: center;
         }
     }
 
@@ -73,8 +79,16 @@
 
     .navbar__profpic {
         width: 48px;
-        float: left;
         margin-right: 10px;
+
+        @media only screen and (min-width: 920px) {
+            float: left;
+        }
+
+        @media only screen and (max-width: 920px) {
+            display: block;
+            margin: 0 auto;
+        }
     }
 }
 
@@ -157,5 +171,32 @@
         &:focus {
             border-bottom: 2px solid #fe1868;
         }
+    }
+
+    .form__description {
+        text-align: left;
+        padding: 16px 0;
+        transition: 0.34s;
+
+        small, a {
+            display: block;
+            color: #5e11db;
+            font-size: 0.85rem;
+
+            &:hover {
+                cursor: pointer;
+                color: #333;
+            }
+        }   
+    }
+}
+
+.footer {
+    text-align: center;
+
+    span {
+        font-size: 2rem;
+        text-shadow: 0 0 0.5px #fff;
+        color: #f03304;
     }
 }

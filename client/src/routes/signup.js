@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
-import { GET } from "../helpers/fetch";
+import { GET, POST } from "../helpers/fetch";
 import { URL_LIST } from "../helpers/config";
 
 import Content from "../components/reusable/content";
 import Form from "../components/reusable/form";
 import InputLabeled from "../components/reusable/inputlabeled";
 import AvatarHolder from "../components/reusable/avatarholder";
+import Button from "../components/reusable/button";
 
 import OK from "../images/checked.png";
 import NOT from "../images/error.png";
@@ -36,6 +37,19 @@ function Signup() {
         })
         .catch(err => setNick(true));
     };
+
+    const handleSubmit = () => {
+        if(userData.nick
+        && userData.email
+        && userData.phone
+        && userData.avatar) {
+            POST({ url: URL_LIST.base + URL_LIST.signup, body: JSON.stringify(userData), method: 'POST' })
+            .then(response => {
+                console.log(response);
+            });
+        }
+        else console.log("Faltam campos");
+    }
 
     return (
         <Content>
@@ -104,7 +118,7 @@ function Signup() {
                     <label htmlFor="terms">Eu concordo</label>
                 </div>
 
-                <button className="form__button">Enviar</button>
+                <Button handleClick={handleSubmit} text={"Enviar"} />
             </Form>
         </Content>
     );

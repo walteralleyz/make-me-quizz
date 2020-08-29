@@ -8,6 +8,7 @@ import { saveLogin } from "../helpers/auth";
 import Content from "../components/reusable/content";
 import Form from "../components/reusable/form";
 import InputLabeled from "../components/reusable/inputlabeled";
+import Button from "../components/reusable/button";
 
 function Signin() {
     const [userData, setUserData] = useState({
@@ -28,11 +29,7 @@ function Signin() {
             method: "POST",
             body
         }).then(response => {
-            saveLogin({
-                nick: response.nick,
-                id: response.id,
-                token: response.token
-            });
+            saveLogin(response);
 
             window.location.replace("/");
         })
@@ -74,9 +71,7 @@ function Signin() {
                     required
                 />
 
-                <button onClick={handleSubmit} className="form__button">
-                    Entrar
-                </button>
+                <Button handleClick={handleSubmit} text={"Entrar"} />
 
                 <div className="form__description">
                     <small>Não sei minha senha!</small>

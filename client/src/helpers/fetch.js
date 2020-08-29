@@ -1,5 +1,9 @@
-export const GET = async ({ url }) => {
-    const request = await fetch(url);
+export const GET = async ({ url, token }) => {
+    const request = await fetch(url, {
+        headers: new Headers(token && {
+            "Authorization" : token
+        })
+    });
     const response = await request;
 
     return response.json();

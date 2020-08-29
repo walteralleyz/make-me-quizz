@@ -24,7 +24,8 @@ export class ConsumerController {
         const body = consumerRepository.save(consumerRepository.create({ 
             nick: request.body.nick, 
             email: request.body.email, 
-            phone: request.body.phone 
+            phone: request.body.phone,
+            avatar: request.body.avatar
         }));
 
         const result = await body;

@@ -15,11 +15,13 @@ a {
     width: 100%;
     top: 0;
     z-index: 1;
+    @include backgroundGlass;
 
     .navbar__list {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
+        text-align: center;
         list-style-type: none;
         margin: 0;
         padding: 0;
@@ -34,6 +36,7 @@ a {
     .navbar__item {
         line-height: 48px;
         padding: 0 5px;
+        flex-grow: 1;
 
         &:hover {
             cursor: pointer;
@@ -42,11 +45,8 @@ a {
 
     .navbar__profpic {
         width: 48px;
+        vertical-align: middle;
         margin-right: 10px;
-
-        @media only screen and (min-width: $mobileLimit) {
-            float: left;
-        }
 
         @media only screen and (max-width: $mobileLimit) {
             display: block;
@@ -92,6 +92,15 @@ a {
             color: #fff;
         }
     }
+}
+
+.question-holder {
+    @include cardContainer;
+    text-align: left;
+    color: $black;
+    text-shadow: none;
+
+    margin: 32px auto;
 }
 
 .error-page {

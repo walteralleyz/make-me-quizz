@@ -3,14 +3,13 @@ import { Link, Redirect } from "react-router-dom";
 
 import { getLogin, delLogin } from "../../helpers/auth";
 import { GET } from "../../helpers/fetch";
-import { URL_LIST } from "../../helpers/config";
-
-import Batman from "../../images/avatar/avatar.png";
+import { URL_LIST, AVATAR_LIST } from "../../helpers/config";
 
 const Navbar = () => {
     const [redirect, setRedirect] = useState(false);
 
     const user = getLogin() || undefined;
+    const avatar = user ? AVATAR_LIST.filter(av => av.description === user.avatar)[0] : AVATAR_LIST[1];
 
     const signout = e => {
         if(getLogin()) {
@@ -20,10 +19,8 @@ const Navbar = () => {
             .then(response => {
                 delLogin();
                 
-                window.location.replace("/signin");
+                setTimeout(() => setRedirect(true), 500);
             });
-        } else {
-            setRedirect(!redirect);
         }
     };
 
@@ -33,15 +30,17 @@ const Navbar = () => {
                 <Link to="/" className="navbar__item">
                     <h1>|MakeMeQuizz|</h1>
                 </Link>
-                <li className="navbar__item">
-                    <h5>{user ? user.nick : ""}</h5>
-                </li>
+                { user && (
+                    <Link to={`/profile?p=${user.nick}`} className="navbar__item navbar__item--background">
+                        <img
+                            className="navbar__profpic"
+                            src={avatar.img}
+                            alt="profile"
+                        />
+                        <small>Meu Perfil</small>
+                    </Link>
+                )}
                 <li onClick={signout} className="navbar__item">
-                    <img
-                        className="navbar__profpic"
-                        src={Batman}
-                        alt="profile"
-                    />
                     <small>{user ? "Sair" : "Entrar"}</small>
                 </li>
             </ul>

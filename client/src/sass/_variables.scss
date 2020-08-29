@@ -19,3 +19,21 @@ $gray: #d9d9d9;
     background-color: rgba(0, 0, 0, 0.13);
     box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.13);
 }
+
+@mixin cardContainer {
+    width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 45px 55px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.13);
+    text-align: center;
+    overflow: hidden;
+    font-family: PoppinsRegular, Arial, Helvetica, sans-serif;
+
+    @media only screen and (max-width: $mobileLimit) {
+        width: 100%;
+        border-radius: 0;
+        padding: 16px;
+    }
+}

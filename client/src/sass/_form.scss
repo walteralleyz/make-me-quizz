@@ -1,19 +1,6 @@
 .form {
-    width: 500px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 45px 55px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.13);
-    text-align: center;
-    overflow: hidden;
-    font-family: PoppinsRegular, Arial, Helvetica, sans-serif;
-
-    @media only screen and (max-width: $mobileLimit) {
-        width: 100%;
-        border-radius: 0;
-        padding: 16px;
-    }
+    @include cardContainer;
+    position: relative;
 
     .form__title {
         color: $black;
@@ -145,6 +132,36 @@
             transform: scale(1.25);
             border-radius: 50%;
             background-color: $pink;
+        }
+    }
+
+    .form__edit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: $black;
+        text-shadow: none;
+        transition: 0.4s;
+
+        &:hover {
+            cursor: pointer;
+            color: #fff;
+            background-color: $blue;
+        }
+    }
+
+    .form__edit--left {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: $black;
+        text-shadow: none;
+        transition: 0.4s;
+
+        &:hover {
+            cursor: pointer;
+            color: #fff;
+            background-color: $blue;
         }
     }
 }

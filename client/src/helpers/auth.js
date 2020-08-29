@@ -10,12 +10,8 @@ export const isAuthenticated = () => {
     return false;
 }
 
-export const saveLogin = ({ nick, id, token }) => {
+export const saveLogin = user => {
     if(typeof window === "object") {
-        const user = {
-            nick, id, token
-        };
-
         localStorage.setItem("user", JSON.stringify(user));
     }
 

@@ -10,6 +10,8 @@ import "./sass/style.scss";
 import Main from './routes/main';
 import Signup from "./routes/signup";
 import Signin from "./routes/signin";
+import Profile from "./routes/profile";
+import Categories from "./routes/categories";
 import PrivateRoute from "./routes/privateroute";
 import PageNotFound from "./routes/404";
 
@@ -24,6 +26,14 @@ function App() {
                 <Switch>
                     <PrivateRoute exact path="/">
                         <Main />
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/categories">
+                        <Categories />
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/profile">
+                        <Profile />
                     </PrivateRoute>
 
                     <Route exact path="/signin">

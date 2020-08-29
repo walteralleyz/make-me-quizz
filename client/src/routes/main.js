@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import { GET } from "../helpers/fetch";
 import { URL_LIST } from "../helpers/config";
@@ -21,12 +22,13 @@ function Main() {
 
                 {categories &&
                     categories.map((category, index) => (
-                        <div
+                        <Link
+                            to={`/categories?c=${category.categoria}`}
                             className="category-holder__item"
                             key={`category-${index}`}
                         >
                             {category.categoria}
-                        </div>
+                        </Link>
                     ))}
             </div>
         </Content>

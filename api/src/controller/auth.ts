@@ -1,5 +1,5 @@
 import { createHmac } from 'crypto';
-import { sign as JWTSign, decode } from 'jsonwebtoken';
+import { sign as JWTSign } from 'jsonwebtoken';
 import { Repository, getRepository } from 'typeorm';
 import { Consumer } from '../entity/consumer';
 
@@ -34,6 +34,10 @@ export async function signin(request: any, response: any) {
     if(findOne && findOne.phone === phoneHash) return response.json({ 
         id: findOne.id,
         nick: findOne.nick,
+        questionDone: findOne.questionDoneId,
+        points: findOne.points,
+        avatar: findOne.avatar,
+        email: findOne.email,
         token
     });
 

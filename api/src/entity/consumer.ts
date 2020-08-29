@@ -31,4 +31,7 @@ export class Consumer {
 
     @Column({ nullable: true, default: '0' })
     questionDoneId?: string;
+
+    @Column()
+    avatar: string;
 }

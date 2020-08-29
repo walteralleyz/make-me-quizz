@@ -1,0 +1,124 @@
+a {
+    @include textShadow;
+    text-decoration: none;
+}
+
+.container {
+    min-height: 100vh;
+    background-image: linear-gradient(to right top, $blue, $pink, $lightPink, $orange, $lightOrange);
+    @include textShadow;
+    font-family: KronaOne, Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+    padding: 6px 0;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+
+    .navbar__list {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+
+        @media only screen and (max-width: $mobileLimit) {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    .navbar__item {
+        line-height: 48px;
+        padding: 0 5px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .navbar__profpic {
+        width: 48px;
+        margin-right: 10px;
+
+        @media only screen and (min-width: $mobileLimit) {
+            float: left;
+        }
+
+        @media only screen and (max-width: $mobileLimit) {
+            display: block;
+            margin: 0 auto;
+        }
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px;
+
+    @media only screen and (max-width: $mobileLimit) {
+        padding: 16px 0;
+    }
+}
+
+.category-holder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 16px 16px;
+
+    .category-holder__title {
+        text-align: center;
+        width: 100%;
+        padding: 32px 0;
+    }
+
+    .category-holder__item {
+        background-color: #fff;
+        padding: 16px 16px;
+        color: $black;
+        text-shadow: none;
+        font-weight: 400;
+        border-radius: 5px;
+
+        &:hover {
+            cursor: pointer;
+            transition: 0.35s ease;
+            background-color: $black;
+            color: #fff;
+        }
+    }
+}
+
+.error-page {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    padding: 2.5rem 0;
+    margin-bottom: 50px;
+
+    .error-page__image {
+        max-width: 30%;
+    }
+
+    .error-page__text {
+        text-align: center;
+        background-color: $blue;
+        padding: 8px 8px;
+        margin-top: 16px;
+    }
+}
+
+.footer {
+    text-align: center;
+
+    span {
+        font-size: 2rem;
+        color: $blue;
+    }
+}

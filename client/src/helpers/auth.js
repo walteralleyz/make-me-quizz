@@ -16,7 +16,7 @@ export const saveLogin = ({ nick, id, token }) => {
             nick, id, token
         };
 
-        localStorage.setItem(JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
     }
 
     return false;
@@ -26,6 +26,12 @@ export const getLogin = () => {
     if(typeof window === "object") {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        return [user.id, user.nick];
+        return user;
+    }
+}
+
+export const delLogin = () => {
+    if(typeof window === "object") {
+        localStorage.removeItem("user");
     }
 }

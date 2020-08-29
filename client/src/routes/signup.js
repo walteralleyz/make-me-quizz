@@ -1,18 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Content from "../components/content";
-import Form from "../components/form";
-import InputLabeled from "../components/inputLabeled";
+import { GET } from "../helpers/fetch";
+import { URL_LIST } from "../helpers/config";
+
+import Content from "../components/reusable/content";
+import Form from "../components/reusable/form";
+import InputLabeled from "../components/reusable/inputlabeled";
+import AvatarHolder from "../components/reusable/avatarholder";
+
+import OK from "../images/checked.png";
+import NOT from "../images/error.png";
 
 function Signup() {
+    const [userData, setUserData] = useState({
+        nick: "",
+        email: "",
+        phone: "",
+        avatar: "artist",
+    });
+
+    const [isNick, setNick] = useState(false);
+
+    const selectAvatar = (e) => {
+        setUserData({
+            ...userData,
+            avatar: e.currentTarget.getAttribute("alt"),
+        });
+    };
+
+    const nickExists = () => {
+        GET({ url: URL_LIST.base + URL_LIST.nick + userData.nick })
+        .then(response => {
+            if(response.error) setNick(true);
+            else setNick(false);
+        })
+        .catch(err => setNick(true));
+    };
+
     return (
         <Content>
             <Form title={"Cadastre-se"}>
+                <AvatarHolder
+                    selected={userData.avatar}
+                    select={selectAvatar}
+                />
+
                 <InputLabeled
                     label={"Nick"}
                     id={"nick"}
                     type={"text"}
                     placeholder={"Ex.: Gilberto333"}
+                    value={userData.nick}
+                    onChange={(e) =>
+                        setUserData({
+                            ...userData,
+                            nick: e.currentTarget.value,
+                        })
+                    }
+
+                    onBlur={nickExists}
+
+                    style={{ 
+                        backgroundImage: `url(${isNick ? NOT : OK})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "5%",
+                        backgroundPosition: "right"
+                    }}
+                    required
                 />
 
                 <InputLabeled
@@ -20,6 +74,14 @@ function Signup() {
                     id={"email"}
                     type={"email"}
                     placeholder={"email@dominio.com"}
+                    value={userData.email}
+                    onChange={(e) =>
+                        setUserData({
+                            ...userData,
+                            email: e.currentTarget.value,
+                        })
+                    }
+                    required
                 />
 
                 <InputLabeled
@@ -27,7 +89,20 @@ function Signup() {
                     id={"pwd"}
                     type={"tel"}
                     placeholder={"(xx)xxxx-xxxxx"}
+                    value={userData.phone}
+                    onChange={(e) =>
+                        setUserData({
+                            ...userData,
+                            phone: e.currentTarget.value,
+                        })
+                    }
+                    required
                 />
+
+                <div className="form__check">
+                    <input type="checkbox" id="terms" required />
+                    <label htmlFor="terms">Eu concordo</label>
+                </div>
 
                 <button className="form__button">Enviar</button>
             </Form>

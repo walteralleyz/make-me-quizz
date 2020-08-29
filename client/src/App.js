@@ -10,17 +10,17 @@ import "./sass/style.scss";
 import Main from './routes/main';
 import Signup from "./routes/signup";
 import Signin from "./routes/signin";
-import PrivateRoute from "./routes/privateRoute";
+import PrivateRoute from "./routes/privateroute";
 import PageNotFound from "./routes/404";
 
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
+import Navbar from "./components/layout/navbar";
+import Footer from "./components/layout/footer";
 
 function App() {
     return (
         <div className="container">
             <Router>
-                <Navbar logged={false} />
+                <Navbar />
                 <Switch>
                     <PrivateRoute exact path="/">
                         <Main />

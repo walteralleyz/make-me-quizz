@@ -31,7 +31,11 @@ export async function signin(request: any, response: any) {
 
     response.cookie("t", token, {expire: new Date('2030-01-01')});
 
-    if(findOne && findOne.phone === phoneHash) return response.json({ message: 'Logado', token });
+    if(findOne && findOne.phone === phoneHash) return response.json({ 
+        id: findOne.id,
+        nick: findOne.nick,
+        token
+    });
 
     return response.status(400).json({ error: 'Email ou Telefone inválido!' });
 }

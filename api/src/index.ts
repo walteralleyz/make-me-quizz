@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
+import cors from 'cors';
 
 import { Request, Response } from 'express';
 import { createConnection, Connection } from 'typeorm';
@@ -17,7 +18,7 @@ dotenv.config();
 const connection: Promise<Connection> = createConnection({
 	type: 'postgres',
     url: process.env.TYPEORM_URL,
-    entities: ['build/entity/*.js'],
+    entities: ['src/entity/*.ts'],
     synchronize: true
 });
 
@@ -26,6 +27,7 @@ connection.then(dbRes => {
 })
 .catch(databaseError => console.error(databaseError));
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());

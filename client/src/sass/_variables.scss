@@ -1,0 +1,21 @@
+$mobileLimit: 920px;
+
+/* COLORS */
+
+$blue: #5e11db;
+$pink: #d8009e;
+$lightPink: #fe1868;
+$orange: #fe754a;
+$lightOrange: #edaf56;
+$black: #333;
+$gray: #d9d9d9;
+
+@mixin textShadow {
+    color: #fff;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+@mixin backgroundGlass {
+    background-color: rgba(0, 0, 0, 0.13);
+    box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.13);
+}

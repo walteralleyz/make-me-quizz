@@ -1,11 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import Content from "../components/content";
-import Form from "../components/form";
-import InputLabeled from "../components/inputLabeled";
+import { POST } from "../helpers/fetch";
+import { URL_LIST } from "../helpers/config";
+import { saveLogin } from "../helpers/auth";
+
+import Content from "../components/reusable/content";
+import Form from "../components/reusable/form";
+import InputLabeled from "../components/reusable/inputlabeled";
 
 function Signin() {
+    const [userData, setUserData] = useState({
+        email: "",
+        phone: "",
+    });
+
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        const body = JSON.stringify({
+            email: userData.email,
+            phone: userData.phone,
+        });
+
+        POST({
+            url: URL_LIST.base + URL_LIST.signin,
+            method: "POST",
+            body
+        }).then(response => {
+            saveLogin({
+                nick: response.nick,
+                id: response.id,
+                token: response.token
+            });
+
+            window.location.replace("/");
+        })
+        .catch(error => console.log(error));
+    };
+
     return (
         <Content>
             <Form title={"Bem vindo de volta!"}>
@@ -14,6 +47,15 @@ function Signin() {
                     id={"email"}
                     type={"email"}
                     placeholder={"Digite seu Email"}
+                    value={userData.email}
+                    onChange={(e) =>
+                        setUserData({
+                            ...userData,
+                            email: e.currentTarget.value,
+                        })
+                    }
+
+                    required
                 />
 
                 <InputLabeled
@@ -21,9 +63,20 @@ function Signin() {
                     id={"pwd"}
                     type={"tel"}
                     placeholder={"Digite seu numero"}
+                    value={userData.phone}
+                    onChange={(e) =>
+                        setUserData({
+                            ...userData,
+                            phone: e.currentTarget.value,
+                        })
+                    }
+
+                    required
                 />
 
-                <button className="form__button">Entrar</button>
+                <button onClick={handleSubmit} className="form__button">
+                    Entrar
+                </button>
 
                 <div className="form__description">
                     <small>Não sei minha senha!</small>

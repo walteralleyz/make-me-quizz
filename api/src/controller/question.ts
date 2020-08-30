@@ -16,7 +16,7 @@ export class QuestionController {
         const body: Promise<Question> = questionRepository.save(questionRepository.create({
             pergunta: request.body.pergunta,
             escolhas: request.body.escolhas,
-            categoria: request.params.category,
+            categoria: request.params.category.toLowerCase(),
             resposta: request.body.resposta
         }));
 

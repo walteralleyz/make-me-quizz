@@ -10,9 +10,30 @@ function Main() {
     const [categories, setCategories] = useState(false);
 
     useEffect(() => {
-        GET({ url: URL_LIST.base + URL_LIST.categories }).then((response) =>
-            setCategories(response.result)
-        );
+        GET({ url: URL_LIST.base + URL_LIST.categories }).then((response) => {
+            let acc = {
+                categoria: [],
+                id: [],
+                obj: []
+            };
+
+            // eslint-disable-next-line
+            response.result.map(x => {
+                if(acc.categoria.indexOf(x.categoria) === -1) {
+                    acc.categoria.push(x.categoria);
+                    acc.id.push(x.id);
+                }
+            });
+
+            for(let i = 0; i < acc.categoria.length; i++) {
+                acc.obj.push({
+                    categoria: acc.categoria[i],
+                    id: acc.id[i]
+                })
+            }
+
+            setCategories(acc.obj);
+        });
     }, []);
 
     return (

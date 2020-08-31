@@ -48,7 +48,15 @@ export class ConsumerController {
 
             const result = await consumerRepository.save(resultUser);
 
-            return response.json({ result });
+            return response.json({ 
+                id: result.id,
+                nick: result.nick,
+                questionDone: result.questionDoneId,
+                points: result.points,
+                avatar: result.avatar,
+                email: result.email,
+                phone: '',
+            });
         }
 
         return response.status(400).json({ error: "Não encontrado" });

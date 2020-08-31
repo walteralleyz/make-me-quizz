@@ -7,8 +7,8 @@ import { URL_LIST, AVATAR_LIST } from "../../helpers/config";
 
 const Navbar = () => {
     const [redirect, setRedirect] = useState(false);
+    const [user, setUser] = useState(getLogin() || undefined);
 
-    const user = getLogin() || undefined;
     const avatar = user ? AVATAR_LIST.filter(av => av.description === user.avatar)[0] : AVATAR_LIST[1];
 
     const signout = e => {
@@ -23,6 +23,13 @@ const Navbar = () => {
             });
         }
     };
+
+    setInterval(() => {
+        if(getLogin()) {
+            setUser(getLogin());
+        }
+        else setUser(undefined);
+    }, 500);
 
     return (
         <nav className="navbar">

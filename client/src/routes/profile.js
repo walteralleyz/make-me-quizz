@@ -50,8 +50,20 @@ function Profile() {
                 body: JSON.stringify(userData),
             })
                 .then((response) => {
-                    if (response) {
-                        saveLogin(response.result);
+                    if (response.error) setNotify({
+                        title: "Erro ao atualizar",
+                        content: "Email ou nick inválido",
+                        type: "danger"
+                    });
+                    else {
+                        setNotify({
+                            title: "Tudo certo",
+                            content: "Seu perfil foi atualizado",
+                            type: "success"
+                        });
+
+                        setEditable(false);
+                        saveLogin({...response, token: getLogin().token});
                     }
                 })
                 .catch((err) => console.log(err));
@@ -100,6 +112,8 @@ function Profile() {
                         content: "A sua pergunta foi salva com sucesso",
                         type: "success"
                     });
+
+                    setEditable(false);
                 });
             } else {
                 setNotify({

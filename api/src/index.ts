@@ -18,7 +18,7 @@ dotenv.config();
 const connection: Promise<Connection> = createConnection({
 	type: 'postgres',
     url: process.env.TYPEORM_URL,
-    entities: ['src/entity/*.ts'],
+    entities: ['build/entity/*.js'],
     synchronize: true
 });
 

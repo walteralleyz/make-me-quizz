@@ -45,6 +45,7 @@ function Categories() {
                         let tempUser = {
                             ...user,
                             questionDone: user.questionDone + "," + answer.id,
+                            points: parseInt(user.points) + 1
                         };
                         saveLogin(tempUser);
                         setUser(tempUser);

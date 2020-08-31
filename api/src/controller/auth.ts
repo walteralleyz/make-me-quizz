@@ -38,6 +38,7 @@ export async function signin(request: any, response: any) {
         points: findOne.points,
         avatar: findOne.avatar,
         email: findOne.email,
+        phone: '',
         token
     });
 

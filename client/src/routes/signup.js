@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 
 import { GET, POST } from "../helpers/fetch";
 import { URL_LIST } from "../helpers/config";
@@ -8,6 +9,7 @@ import Form from "../components/reusable/form";
 import InputLabeled from "../components/reusable/inputlabeled";
 import AvatarHolder from "../components/reusable/avatarholder";
 import Button from "../components/reusable/button";
+import Notify from "../components/reusable/notify";
 
 import OK from "../images/checked.png";
 import NOT from "../images/error.png";
@@ -21,6 +23,8 @@ function Signup() {
     });
 
     const [isNick, setNick] = useState(false);
+    const [notify, setNotify] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
     const selectAvatar = (e) => {
         setUserData({
@@ -31,28 +35,48 @@ function Signup() {
 
     const nickExists = () => {
         GET({ url: URL_LIST.base + URL_LIST.nick + userData.nick })
-        .then(response => {
-            if(response.error) setNick(true);
-            else setNick(false);
-        })
-        .catch(err => setNick(true));
+            .then((response) => {
+                if (response.error) setNick(true);
+                else setNick(false);
+            })
+            .catch((err) => setNick(true));
     };
 
     const handleSubmit = () => {
-        if(userData.nick
-        && userData.email
-        && userData.phone
-        && userData.avatar) {
-            POST({ url: URL_LIST.base + URL_LIST.signup, body: JSON.stringify(userData), method: 'POST' })
-            .then(response => {
-                console.log(response);
+        if (
+            userData.nick &&
+            userData.email &&
+            userData.phone &&
+            userData.avatar
+        ) {
+            let tempUser = { ...userData, phone: "55" + userData.phone};
+
+            POST({
+                url: URL_LIST.base + URL_LIST.signup,
+                body: JSON.stringify(tempUser),
+                method: "POST",
+            }).then((response) => {
+                if (response.error)
+                    setNotify({
+                        title: "Falha no cadastro",
+                        content: "Email ou nick já cadastrado",
+                        type: "danger",
+                    });
+                else setRedirect(true);
             });
-        }
-        else console.log("Faltam campos");
-    }
+        } else console.log("Faltam campos");
+    };
 
     return (
         <Content>
+            <Notify
+                visible={notify}
+                title={notify && notify.title}
+                content={notify && notify.content}
+                type={notify && notify.type}
+                close={() => setNotify(false)}
+            />
+
             <Form title={"Cadastre-se"}>
                 <AvatarHolder
                     selected={userData.avatar}
@@ -71,14 +95,12 @@ function Signup() {
                             nick: e.currentTarget.value,
                         })
                     }
-
                     onBlur={nickExists}
-
-                    style={{ 
+                    style={{
                         backgroundImage: `url(${isNick ? NOT : OK})`,
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "5%",
-                        backgroundPosition: "right"
+                        backgroundPosition: "right",
                     }}
                     required
                 />
@@ -102,7 +124,7 @@ function Signup() {
                     label={"Celular"}
                     id={"pwd"}
                     type={"tel"}
-                    placeholder={"(xx)xxxx-xxxxx"}
+                    placeholder={"Ex.: 47999219999"}
                     value={userData.phone}
                     onChange={(e) =>
                         setUserData({
@@ -118,8 +140,10 @@ function Signup() {
                     <label htmlFor="terms">Eu concordo</label>
                 </div>
 
-                <Button handleClick={handleSubmit} text={"Enviar"} />
+                <Button handleClick={handleSubmit} text={"Enviar"} disabled={!(userData.email && userData.avatar && userData.nick && userData.phone)} />
             </Form>
+
+            {redirect && <Redirect to="/" />}
         </Content>
     );
 }

@@ -9,7 +9,7 @@ import Professor from "../images/avatar/professor.png";
 import Programmer from "../images/avatar/programmer.png";
 
 export const URL_LIST = {
-    base: "http://192.168.43.40:5000/api/v1",
+    base: "https://makemequizz-api.herokuapp.com/api/v1",
     signin: "/user/signin",
     signup: "/user/signup",
     signout: "/user/signout",

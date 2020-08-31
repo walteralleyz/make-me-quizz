@@ -9,6 +9,7 @@ import Content from "../components/reusable/content";
 import Form from "../components/reusable/form";
 import InputLabeled from "../components/reusable/inputlabeled";
 import Button from "../components/reusable/button";
+import Notify from "../components/reusable/notify";
 
 function Signin() {
     const [userData, setUserData] = useState({
@@ -16,12 +17,14 @@ function Signin() {
         phone: "",
     });
 
+    const [notify, setNotify] = useState(false);
+
     const handleSubmit = e => {
         e.preventDefault();
 
         const body = JSON.stringify({
             email: userData.email,
-            phone: userData.phone,
+            phone: "55" + userData.phone,
         });
 
         POST({
@@ -29,7 +32,11 @@ function Signin() {
             method: "POST",
             body
         }).then(response => {
-            if(response.status >= 400) console.log(response);
+            if(response.error) setNotify({
+                title: "Falha no login",
+                content: "Email ou Telefone inválido",
+                type: "danger"
+            });
             else {
                 saveLogin(response);
                 window.location.replace("/");
@@ -40,6 +47,14 @@ function Signin() {
 
     return (
         <Content>
+            <Notify
+                visible={notify}
+                title={notify && notify.title}
+                content={notify && notify.content}
+                type={notify && notify.type}
+                close={() => setNotify(false)}
+            />
+
             <Form title={"Bem vindo de volta!"}>
                 <InputLabeled
                     label={"Email"}

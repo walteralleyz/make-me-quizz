@@ -33,6 +33,27 @@ export class ConsumerController {
         return response.json({ result });
     }
 
+    async update(request: any, response: any) {
+        const consumerRepository: Repository<Consumer> = getRepository(Consumer);
+        const user: Promise<Consumer | undefined> = consumerRepository.findOne({
+            id: request.params.id
+        });
+
+        const resultUser = await user;
+
+        if(resultUser) {
+            resultUser.nick = request.body.nick;
+            resultUser.email = request.body.email;
+            resultUser.avatar = request.body.avatar;
+
+            const result = await consumerRepository.save(resultUser);
+
+            return response.json({ result });
+        }
+
+        return response.status(400).json({ error: "Não encontrado" });
+    }
+
     async nickExists(request: any, response: any) {
         const consumerRepository: Repository<Consumer> = getRepository(Consumer);
 
@@ -60,15 +81,17 @@ export class ConsumerController {
     
             const findOne: Consumer | undefined = await exists;
     
-            if(findOne) {
-                findOne.points = findOne.points && findOne.points + 1;
+            if(findOne && findOne.points !== undefined) {
+                findOne.points += 1;
                 findOne.questionDoneId = findOne.questionDoneId && findOne.questionDoneId + 
-                `, ${request.body.id}`;
+                `,${request.body.id}`;
     
                 consumerRepository.save(findOne);
                 
                 return response.json({ message: 'Correto' });
             }
         }
+
+        return response.status(400).json({ error: 'Errado' });
     }
 }

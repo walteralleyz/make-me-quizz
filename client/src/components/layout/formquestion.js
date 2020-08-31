@@ -149,7 +149,7 @@ const FormQuestion = ({
             disabled={!editable}
         />
 
-        <Button handleClick={handleQuestionSubmit} text={"Enviar"} />
+        <Button handleClick={handleQuestionSubmit} text={"Enviar"} disabled={!editable} />
     </div>
 );
 

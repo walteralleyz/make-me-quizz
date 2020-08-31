@@ -29,9 +29,11 @@ function Signin() {
             method: "POST",
             body
         }).then(response => {
-            saveLogin(response);
-
-            window.location.replace("/");
+            if(response.status >= 400) console.log(response);
+            else {
+                saveLogin(response);
+                window.location.replace("/");
+            }
         })
         .catch(error => console.log(error));
     };

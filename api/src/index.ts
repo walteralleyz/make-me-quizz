@@ -37,7 +37,7 @@ app.use('/api/v1/question', questionRouter);
 app.use('/api/v1/user', userRouter);
 
 app.use('*', (request: Request, response: Response) => {
-    return response.json({ error: 'Rota não habilitada!' }).status(404);
+    return response.status(404).json({ error: 'Rota não habilitada!' });
 });
 
 app.use((err: any, request: Request, response: Response, next: any) => {

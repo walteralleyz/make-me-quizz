@@ -31,18 +31,21 @@ const Navbar = () => {
                     <h1>|MakeMeQuizz|</h1>
                 </Link>
                 { user && (
-                    <Link to={`/profile?p=${user.nick}`} className="navbar__item navbar__item--background">
-                        <img
-                            className="navbar__profpic"
-                            src={avatar.img}
-                            alt="profile"
-                        />
-                        <small>Meu Perfil</small>
-                    </Link>
+                    <>
+                        <Link to={`/profile?p=${user.nick}`} className="navbar__item navbar__item--background">
+                            <img
+                                className="navbar__profpic"
+                                src={avatar.img}
+                                alt="profile"
+                            />
+                            <small>Meu Perfil</small>
+                        </Link>
+                        <li className="navbar__item"><small>{user.points} pontos</small></li>
+                    </>
                 )}
-                <li onClick={signout} className="navbar__item">
+                <Link to="/" onClick={signout} className="navbar__item">
                     <small>{user ? "Sair" : "Entrar"}</small>
-                </li>
+                </Link>
             </ul>
 
             { redirect && <Redirect to="/signin" /> }

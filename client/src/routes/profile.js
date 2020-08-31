@@ -8,6 +8,8 @@ import Content from "../components/reusable/content";
 import Form from "../components/reusable/form";
 import FormUser from "../components/layout/formuser";
 import FormQuestion from "../components/layout/formquestion";
+import Breadcrumb from "../components/reusable/breadcrumb";
+import Notify from "../components/reusable/notify";
 
 function Profile() {
     const [userData, setUserData] = useState({
@@ -29,6 +31,7 @@ function Profile() {
         categoria: "",
     });
 
+    const [notify, setNotify] = useState(false);
     const [editable, setEditable] = useState(false);
     const [create, setCreate] = useState(false);
 
@@ -42,14 +45,16 @@ function Profile() {
     const handleUserSubmit = () => {
         if (userData.nick && userData.email && userData.avatar) {
             POST({
-                url: URL_LIST.base + URL_LIST,
-                method: "POST",
+                url: URL_LIST.base + URL_LIST.update + "/" + getLogin().id,
+                method: "PUT",
                 body: JSON.stringify(userData),
-            }).then((response) => {
-                if (response) {
-                    saveLogin(response);
-                }
-            });
+            })
+                .then((response) => {
+                    if (response) {
+                        saveLogin(response.result);
+                    }
+                })
+                .catch((err) => console.log(err));
         }
     };
 
@@ -75,8 +80,8 @@ function Profile() {
                         questionData.categoria,
                     method: "POST",
                     body: JSON.stringify(questionData),
-                    token: "Bearer " + getLogin().token
-                }).then(response => {
+                    token: "Bearer " + getLogin().token,
+                }).then((response) => {
                     setQuestionData({
                         pergunta: "",
                         escolhas: {
@@ -89,19 +94,34 @@ function Profile() {
                         resposta: "",
                         categoria: "",
                     });
+
+                    setNotify({
+                        title: "Pergunta Salva",
+                        content: "A sua pergunta foi salva com sucesso",
+                        type: "success"
+                    });
                 });
             } else {
-                window.alert("Faltam campos!");
+                setNotify({
+                    title: "Faltam campos",
+                    content: "Todos os campos precisam ser preenchidos",
+                    type: "danger",
+                });
             }
         } else {
-            window.alert("Faltam campos!");
+            setNotify({
+                title: "Faltam campos",
+                content: "Todos os campos precisam ser preenchidos",
+                type: "danger",
+            });
         }
     };
 
     return (
         <Content>
+            <Breadcrumb />
             <Form title={create ? "Nova Pergunta" : "Dados Pessoais"}>
-                <FormUser 
+                <FormUser
                     handleUserSubmit={handleUserSubmit}
                     setEditable={setEditable}
                     setUserData={setUserData}
@@ -122,6 +142,14 @@ function Profile() {
                     create={create}
                 />
             </Form>
+
+            <Notify
+                visible={notify}
+                type={notify && notify.type}
+                content={notify && notify.content}
+                title={notify && notify.title}
+                close={() => setNotify(false)}
+            />
         </Content>
     );
 }

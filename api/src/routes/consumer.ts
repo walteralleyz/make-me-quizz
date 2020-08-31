@@ -9,10 +9,7 @@ const userRouter = Router();
 const consumerController: ConsumerController = new ConsumerController();
 
 userRouter.post('/signin', loginValidation.check, loginValidation.handler, signin);
-userRouter.get('/signout', signout);
-
 userRouter.post('/signup', validation.check, validation.handler, consumerController.create);
-
 userRouter.post(
     '/check/:id/', 
     requireSignin, 
@@ -21,6 +18,9 @@ userRouter.post(
     consumerController.questionDone
 );
 
+userRouter.put('/update/:id', consumerController.update);
+
+userRouter.get('/signout', signout);
 userRouter.get('/nick/:nick', consumerController.nickExists);
 
 export default userRouter;

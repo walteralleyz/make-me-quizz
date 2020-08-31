@@ -9,11 +9,13 @@ import Professor from "../images/avatar/professor.png";
 import Programmer from "../images/avatar/programmer.png";
 
 export const URL_LIST = {
-    base: "http://localhost:5000/api/v1",
+    base: "http://192.168.43.40:5000/api/v1",
     signin: "/user/signin",
     signup: "/user/signup",
     signout: "/user/signout",
     nick: "/user/nick/",
+    check: "/user/check",
+    update: "/user/update",
     categories: "/question/categories"
 };
 

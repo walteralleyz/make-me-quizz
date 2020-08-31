@@ -21,7 +21,7 @@ const FormUser = ({
             onClick={() => setCreate(!create)}
             style={{
                 visibility:
-                    getLogin().id === 2 && getLogin().nick === "alleyz"
+                    getLogin().id === 1 && getLogin().nick === "walter"
                         ? "show"
                         : "hidden",
             }}

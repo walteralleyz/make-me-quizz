@@ -70,7 +70,12 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 16px 16px;
-    justify-content: space-evenly;
+    width: 70%;
+    margin: 0 auto;
+
+    @media only screen and (max-width: $mobileLimit) {
+        width: 100%;
+    }
 
     .category-holder__title {
         text-align: center;
@@ -79,12 +84,14 @@ a {
     }
 
     .category-holder__item {
-        background-color: #fff;
         padding: 16px 16px;
         color: $black;
         text-shadow: none;
         font-weight: 400;
         border-radius: 5px;
+        flex-grow: 1;
+        flex-basis: 30%;
+        text-align: center;
 
         &:hover {
             cursor: pointer;
@@ -92,16 +99,118 @@ a {
             background-color: $black;
             color: #fff;
         }
+
+        @media only screen and (max-width: $mobileLimit) {
+            text-align: left;
+        }
     }
 }
 
 .question-holder {
     @include cardContainer;
-    text-align: left;
     color: $black;
     text-shadow: none;
-
+    position: relative;
     margin: 32px auto;
+
+    .question-holder__checked {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: $black;
+        color: #fff;
+        padding: 0 10px;
+        font-size: 1.12rem;
+
+        img {
+            max-width: 10px;
+        }
+    }
+
+    .question-holder__title {
+        text-align: left;
+    }
+
+    .question-holder__question {
+        font-weight: bolder;
+        padding: 16px 0;
+        text-align: justify;
+    }
+
+    .question-holder__choices {
+        list-style: none;
+        padding: 16px 0;
+        text-align: left;
+        
+        li input {
+            vertical-align: middle;
+        }
+    }
+
+    button {
+        margin-top: 32px;
+    }
+}
+
+.breadcrumb {
+    font-size: 0.8rem;
+    color: $gray;
+    margin: 32px;
+}
+
+.notify {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    overflow: hidden;
+
+    .notify__content-holder {
+        position: absolute;
+        left: 50%;
+        top: 20px;
+        transform: translateX(-50%);
+        font-weight: 400;
+        border-radius: 5px;
+    }
+
+    .notify__close {
+        float: right;
+        margin-right: 10px;
+        margin-top: 5px;
+
+        &:hover {
+            cursor: pointer;
+            color: #fff;
+        }
+    }
+
+    .notify__title {
+        font-size: 0.8rem;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: $gray;
+        padding: 8px;
+    }
+
+    .notify__content {
+        font-size: 0.6rem;
+        padding: 8px;
+
+        img {
+            max-width: 100%;
+        }
+    }
+}
+
+.notify--danger {
+    background-color: $red;
+    color: #fff;
+}
+
+.notify--success {
+    background-color: $green;
+    color: #fff;
 }
 
 .error-page {
